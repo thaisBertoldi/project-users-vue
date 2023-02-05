@@ -3,6 +3,9 @@
         <h2 class="title-register">Registro de usuário</h2>
         <img src="../assets/anotation.png" alt="" class="image-anotation">
         <div class="column is-centered form-input box">
+            <div v-if="error">
+                <p class="error">{{ error }}</p>
+            </div>
             <input v-model="name" type="text" placeholder="Nome do usuário" class="input">
             <input v-model="email" type="email" placeholder="Email" class="input">
             <input v-model="password" type="password" placeholder="********" class="input">
@@ -20,6 +23,7 @@
 
 <script>
 import { notify } from 'vuejs-notify'
+import axios from 'axios'
 
 export default {
     data() {
@@ -27,22 +31,32 @@ export default {
             name: '',
             password: '',
             email: '',
-            role: '0'
+            role: '0',
+            error: undefined
         }
     },
     methods: {
         register() {
-            console.log(this.name);
-            notify.success({
-                position: 'top center',
-                title: 'Usuário cadastrado com sucesso!',
-                timeout: 10000
-            });
-            notify.error({
-                position: 'top center',
-                title: 'Falha ao tentar cadastrar o usuário.',
-                timeout: 10000
-            });
+            axios.post('http://localhost:8686/user', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                role: Number(this.role)
+            }).then(() => {
+                notify.success({
+                    position: 'top center',
+                    title: 'Usuário cadastrado com sucesso!',
+                    timeout: 10000
+                });
+                this.$router.push({ name: 'home' });
+            }).catch(err => {
+                notify.error({
+                    position: 'top center',
+                    title: 'Não foi possível concluir o cadastro.',
+                    timeout: 10000
+                });
+                this.error = err.response.data.err;
+            })
         }
     }
 
@@ -85,6 +99,10 @@ export default {
         width: 150px;
         left: 93%;
         top: -20px;
+    }
+
+    .error {
+        color: red;
     }
 
 </style>
