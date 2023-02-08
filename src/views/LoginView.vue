@@ -26,7 +26,13 @@ export default {
     },
     methods: {
         login() {
-            axios.get('http://localhost:8686/user').then(() => {}).catch(err => {
+            axios.post('http://localhost:8686/login', {
+                password: this.password,
+                email: this.email
+            }).then(res => {
+                localStorage.setItem('token', res.data.token);
+                this.$router.push({ name: 'Home' });
+            }).catch(err => {
                 notify.error({
                     position: 'top center',
                     title: 'Não foi possível realizar o login.',
