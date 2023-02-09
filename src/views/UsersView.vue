@@ -18,11 +18,33 @@
                     <td>{{ user.role | processRole }}</td>
                     <td  class="is-centered is-grouped">
                         <button class="button is-success is-rounded">Editar</button>
-                        <button class="button is-danger is-rounded">Deletar</button>
+                        <button class="button is-danger is-rounded" @click="showModal(user.id)">Deletar</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div :class="{ modal: true, 'is-active': modal }">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Tem certeza?
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            Essa ação é irreversível. Deseja realmente excluir este usuário?
+                        </div>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="#" class="card-footer-item">Sim</a>
+                        <a href="#" class="card-footer-item" @click="hideModal()">Cancelar</a>
+                    </footer>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close"  @click="hideModal()"></button>
+        </div>
     </div>
   </div>
 </template>
@@ -44,7 +66,8 @@ export default {
   },
   data() {
     return {
-        users: []
+        users: [],
+        modal: false
     }
   },
   filters: {
@@ -56,6 +79,14 @@ export default {
         } else {
             return 'Outro cargo';
         }
+    }
+  },
+  methods: {
+    hideModal() {
+        this.modal = false;
+    },
+    showModal(id) {
+        this.modal = true;
     }
   }
 };
