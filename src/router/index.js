@@ -5,18 +5,14 @@ import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import UsersView from "../views/UsersView.vue";
 import axios from "axios";
+import headers from '../utils/headers';
 
 Vue.use(VueRouter);
 
 const AdminAuth = (to, from, next) => {
   const token = localStorage.getItem("token");
   if (token) {
-    const req = {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    };
-    axios.post("http://localhost:8686/validate", {}, req)
+    axios.post("http://localhost:8686/validate", {}, headers.reqToken)
       .then(() => {
         next();
       }).catch((err) => {

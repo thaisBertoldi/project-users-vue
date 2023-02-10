@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <footer class="card-footer">
-                        <a href="#" class="card-footer-item">Sim</a>
+                        <a href="#" class="card-footer-item" @click="deleteUser()">Sim</a>
                         <a href="#" class="card-footer-item" @click="hideModal()">Cancelar</a>
                     </footer>
                 </div>
@@ -51,23 +51,18 @@
 
 <script>
 import axios from "axios";
+import { notify } from 'vuejs-notify';
+import headers from '../utils/headers';
+
 export default {
   created() {
-    const req = {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-    };
-    axios.get("http://localhost:8686/user", req).then((res) => {
-        this.users = res.data;
-      }).catch((err) => {
-        console.log(err);
-      });
+    this.getAllUsers();
   },
   data() {
     return {
         users: [],
-        modal: false
+        modal: false,
+        deleteUserId: -1
     }
   },
   filters: {
@@ -85,8 +80,35 @@ export default {
     hideModal() {
         this.modal = false;
     },
+    getAllUsers() {
+        axios.get("http://localhost:8686/user", headers.reqToken).then((res) => {
+            this.users = res.data;
+        }).catch((err) => {
+            console.log(err);
+        });
+    },
     showModal(id) {
+        this.deleteUserId = id;
         this.modal = true;
+    },
+    deleteUser() {
+        axios.delete(`http://localhost:8686/user/${this.deleteUserId}`, headers.reqToken)
+        .then(() => {
+            notify.success({
+                position: 'top center',
+                title: 'Usuário deletado com sucesso',
+                timeout: 10000
+            });
+            this.modal = false;
+            this.getAllUsers();
+        }).catch(() => {
+            notify.error({
+                position: 'top center',
+                title: 'Não foi possível deletar o usuário.',
+                timeout: 10000
+            });
+            this.modal = false;
+        })
     }
   }
 };
