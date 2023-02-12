@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import UsersView from "../views/UsersView.vue";
 import axios from "axios";
 import headers from '../utils/headers';
+import EditView from '../views/EditView.vue';
 
 Vue.use(VueRouter);
 
@@ -44,6 +45,12 @@ const routes = [
     path: "/users",
     name: "users",
     component: UsersView,
+    beforeEnter: AdminAuth,
+  },
+  {
+    path: "/edit/:id",
+    name: "edit",
+    component: EditView,
     beforeEnter: AdminAuth,
   },
   {
