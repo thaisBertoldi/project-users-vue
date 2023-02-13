@@ -17,7 +17,7 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.role | processRole }}</td>
                     <td  class="is-centered is-grouped">
-                        <button class="button is-success is-rounded">Editar</button>
+                        <router-link :to="{name: 'edit', params: { id: user.id }}"><button class="button is-success is-rounded">Editar</button></router-link>
                         <button class="button is-danger is-rounded" @click="showModal(user.id)">Deletar</button>
                     </td>
                 </tr>

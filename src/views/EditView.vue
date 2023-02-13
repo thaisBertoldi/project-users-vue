@@ -39,20 +39,21 @@ export default {
     },
     methods: {
         update() {
-            axios.post('http://localhost:8686/user', {
+            axios.put('http://localhost:8686/user', {
                 name: this.name,
                 email: this.email,
-            }).then(() => {
+                id: this.id
+            }, headers.reqToken).then(() => {
                 notify.success({
                     position: 'top center',
-                    title: 'Usuário cadastrado com sucesso!',
+                    title: 'Usuário editado com sucesso!',
                     timeout: 10000
                 });
-                this.$router.push({ name: 'home' });
+                this.$router.push({ name: 'users' });
             }).catch(err => {
                 notify.error({
                     position: 'top center',
-                    title: 'Não foi possível concluir o cadastro.',
+                    title: 'Não foi possível editar o usuário.',
                     timeout: 10000
                 });
                 this.error = err.response.data.err;
