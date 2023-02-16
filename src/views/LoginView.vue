@@ -31,7 +31,7 @@ export default {
                 email: this.email
             }).then(res => {
                 localStorage.setItem('token', res.data.token);
-                this.$router.push({ name: 'Home' });
+                this.$router.push({ name: 'Home' })
             }).catch(err => {
                 notify.error({
                     position: 'top center',
