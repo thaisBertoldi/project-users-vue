@@ -23,7 +23,7 @@
 
 <script>
 import { notify } from 'vuejs-notify'
-import axios from 'axios'
+import api from '../api'
 
 export default {
     data() {
@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         register() {
-            axios.post('http://localhost:8686/user', {
+            api.post('/user', {
                 name: this.name,
                 email: this.email,
                 password: this.password,

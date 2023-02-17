@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import { notify } from 'vuejs-notify';
 import headers from '../utils/headers';
+import api from '../api';
 
 export default {
   created() {
@@ -81,7 +81,7 @@ export default {
         this.modal = false;
     },
     getAllUsers() {
-        axios.get("http://localhost:8686/user", headers.reqToken).then((res) => {
+        api.get("/user", headers.reqToken).then((res) => {
             this.users = res.data;
         }).catch((err) => {
             console.log(err);
@@ -92,7 +92,7 @@ export default {
         this.modal = true;
     },
     deleteUser() {
-        axios.delete(`http://localhost:8686/user/${this.deleteUserId}`, headers.reqToken)
+        api.delete(`/user/${this.deleteUserId}`, headers.reqToken)
         .then(() => {
             notify.success({
                 position: 'top center',

@@ -14,7 +14,7 @@
 
 <script>
 import { notify } from 'vuejs-notify'
-import axios from 'axios'
+import api from '../api'
 
 export default {
     data() {
@@ -26,12 +26,13 @@ export default {
     },
     methods: {
         login() {
-            axios.post('http://localhost:8686/login', {
+            api.post('/login', {
                 password: this.password,
                 email: this.email
             }).then(res => {
                 localStorage.setItem('token', res.data.token);
-                this.$router.push({ name: 'Home' })
+                this.$root.$emit('login-success', true);
+                this.$router.push({ name: 'home' })
             }).catch(err => {
                 notify.error({
                     position: 'top center',

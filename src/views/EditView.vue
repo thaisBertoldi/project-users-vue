@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <h2 class="title-register">Editar usuário</h2>
-        <img src="../assets/anotation.png" alt="" class="image-anotation">
         <div class="column is-centered form-input box">
             <div v-if="error">
                 <p class="error">{{ error }}</p>
@@ -15,12 +14,12 @@
 
 <script>
 import { notify } from 'vuejs-notify'
-import axios from 'axios'
 import headers from '../utils/headers'
+import api from '../api'
 
 export default {
     created() {
-        axios.get(`http://localhost:8686/user/${this.$route.params.id}`, headers.reqToken)
+        api.get(`/user/${this.$route.params.id}`, headers.reqToken)
         .then(res => {
             this.name = res.data.name;
             this.email = res.data.email;
@@ -34,12 +33,12 @@ export default {
             name: '',
             email: '',
             id: -1,
-            error: undefined
+            error: undefined,
         }
     },
     methods: {
         update() {
-            axios.put('http://localhost:8686/user', {
+            api.put('/user', {
                 name: this.name,
                 email: this.email,
                 id: this.id
@@ -58,9 +57,8 @@ export default {
                 });
                 this.error = err.response.data.err;
             })
-        }
-    }
-
+        },
+    },
 }
 </script>
 
